@@ -10,7 +10,7 @@ jobs:
       - name: Installing and running Syft
         uses: github-actions-for-cicd/syft-action@main
         with:
-          directory-path: dir:hello-flask/
+          directory-path: dir:/home/runner/_work/hello-flask/hello-flask
           output-format: spdx-json
  
   upload-sbom :
