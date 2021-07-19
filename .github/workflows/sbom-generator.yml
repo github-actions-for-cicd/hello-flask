@@ -1,0 +1,45 @@
+name: A workflow that tests SBOM generation on selfhosted runners
+on: push
+jobs: 
+  install-runner-default:
+    runs-on: ubuntu-20.04
+    name: Install runner on OpenShift cluster
+    steps: 
+      - name: Authenticate
+        uses: redhat-actions/oc-login@v1
+        env:
+          OPENSHIFT_USER: ${{ secrets.OPENSHIFT_USER }}
+          OPENSHIFT_NAMESPACE: default
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: default
+      - name: Install self hosted runner into this repository
+        uses: redhat-actions/openshift-actions-runner-installer@v1
+        with:
+          github_pat: ${{ secrets.PAT }}
+        
+  run-sbom-generator :
+    name: Running the SBOM generator
+    needs: install-runner-default
+    runs-on: [self-hosted]
+    steps: 
+      - uses: actions/checkout@v2 
+      - name: Installing and running Syft
+        uses: github-actions-for-cicd/syft-action@main
+        with:
+          directory-path: alpine:3.14
+          output-format: spdx-json
+ 
+  upload-sbom :
+    name: Upload the SBOM 
+    needs: run-sbom-generator
+    runs-on: [self-hosted]
+    steps:
+     - name: Upload log file
+       uses: actions/upload-artifact@v2
+       with:
+        name: 'Software Bill of Materials'
+        path: sbom.json
+        
