@@ -11,7 +11,7 @@ jobs:
         uses: github-actions-for-cicd/syft-action@main
         with:
           directory-path: dir:/home/runner/_work/hello-flask/hello-flask
-          output-format: text
+          output-format: table
  
   upload-sbom :
     name: Upload the SBOM 
@@ -22,5 +22,5 @@ jobs:
        uses: actions/upload-artifact@v2
        with:
         name: 'Software Bill of Materials'
-        path: sbom.json
+        path: sbom
         
