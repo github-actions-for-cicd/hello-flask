@@ -23,4 +23,16 @@ jobs:
        with:
         name: 'Software Bill of Materials'
         path: sbom.xml
+  
+  detect-vulnerability :
+    name: Add package vulnerability
+    runs-on: [self-hosted]
+    steps:
+     - name: Detect Vulnerability
+       uses: github-actions-for-cicd/package-vulnerability-detector@main
+     - name: Upload 
+       uses: actions/upload-artifact@v2
+       with:
+        name: 'Vulnerability text'
+        path: vulnerability.txt
         
