@@ -26,6 +26,7 @@ jobs:
   
   detect-vulnerability :
     name: Add package vulnerability
+    needs: upload-sbom
     runs-on: [self-hosted]
     steps:
      - name: Detect Vulnerability
