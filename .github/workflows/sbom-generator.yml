@@ -34,6 +34,6 @@ jobs:
      - name: Upload 
        uses: actions/upload-artifact@v2
        with:
-        name: 'Vulnerability text'
+        name: 'Vulnerability json'
         path: vulnerability.json
         
